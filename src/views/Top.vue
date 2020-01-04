@@ -32,6 +32,9 @@
 </template>
 
 <script>
+import db from 'firebase'
+import {mapActions} from 'vuex'
+
 export default {
   data() {
     return{
@@ -43,6 +46,9 @@ export default {
     joinRoom(){
       this.errorMessage = this.checkInput(this.roomNo)
       if(!this.errorMessage){
+        this.setRoomNo(this.roomNo)
+        this.clearChats()
+        //this.getDBChats()
         this.$router.push({name: 'room'})
       }
     },
@@ -58,7 +64,16 @@ export default {
       }
       
       return ''
-    }
+    },
+    getDBChats(){
+      db.firestore().collection(`rooms/${this.roomNo}/chats`).get().then(snapshot =>{
+        snapshot.forEach(doc => this.addChat({
+          chat: doc.data()
+        }))
+        this.$router.push({name: 'room'})
+      })
+    },
+    ...mapActions(['setRoomNo', 'addChat', 'clearChats'])
   }
 }
 </script>
