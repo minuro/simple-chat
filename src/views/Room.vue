@@ -4,11 +4,14 @@
       <v-flex xs12>
         <h1>部屋 [{{this.$store.state.roomNo}}]</h1>
       </v-flex>
-      <v-flex xs12>
-        <div v-for="(chat, index) in dbChats" :key="index">
-          <h3>{{chat.text}}</h3>
-          {{chat.createdAt | moment}}
-        </div>
+      <v-flex xs10 md8>
+        <ChatDisplay 
+        class="mt-2"
+        v-for="(chat, index) in dbChats" 
+        :key="index"
+        :text="chat.text"
+        :date="chat.createdAt | moment"
+        />
       </v-flex>
     </v-layout>
   </v-container>
@@ -17,10 +20,14 @@
 <script>
 import db from 'firebase'
 import moment from 'moment'
+import ChatDisplay from '../components/ChatDisplay'
 import {mapActions} from 'vuex'
 import {mapGetters} from 'vuex'
 
 export default {
+  components: {
+    ChatDisplay
+  },
   created() {
     if(!this.$store.state.roomNo){
       this.$router.push({name: 'top'})
