@@ -22,6 +22,7 @@
         solo 
         single-line
         v-model="roomNo"
+        @keyup.enter="joinRoom"
         />
         <v-btn color="info" min-width="80px" @click="joinRoom">
           入室する
